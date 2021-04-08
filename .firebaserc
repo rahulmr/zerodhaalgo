@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "zerodha-a1fc5": {
+      "hosting": {
+        "zerodha": [
+          "zerodha-a1fc5"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "zerodha-a1fc5"
+  }
+}
