@@ -11,6 +11,11 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { environment } from '../environments/environment'
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { UserdataService } from './service/userdata.service';
+
+
 
 
 @NgModule({
@@ -20,6 +25,9 @@ import { environment } from '../environments/environment'
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
+    HttpClientModule
+,
     AppRoutingModule,
     BrowserAnimationsModule,
     AppSharedModule,
@@ -28,6 +36,7 @@ import { environment } from '../environments/environment'
     AngularFireAuthModule, // auth
     AngularFireStorageModule // storage
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [UserdataService],
 })
 export class AppModule { }
