@@ -12,25 +12,24 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'zerodha';
-  public weatherSearchForm: FormGroup;
-  public href: string = "";
-  url: string = "asdf";
 
-  constructor(private formBuilder: FormBuilder,private router : Router, private apixuService: UserdataService) {}
+  products: any[];
+
+  constructor(private formBuilder: FormBuilder,private router : Router, private dataService: UserdataService) {}
+
+
 
   ngOnInit() {
-    this.href = this.router.url;
-    console.log(this.router.url);
-    
-    this.weatherSearchForm = this.formBuilder.group({
-      location: ['']
-    });
+    console.log('hi');
+    this.dataService.sendGetRequest().subscribe((data: any[])=>{
+      console.log(data);
+      this.products = data;
+    })  
+  }
   }
 
-  sendToAPIXU(formValues) {
-    console.log(formValues);
-    this.apixuService.getWeather(formValues.location).subscribe(data => console.log(data));
 
-  }
 
-}
+  
+
+

@@ -9,9 +9,7 @@ const port = 3000;
 //define db through mongojs
 
 
-app.get('/', (req, res) => {
-    res.send('Please use /api/client');
-});
+
 
 app.listen(port, () => {
     console.log('Server start on port' +port);
@@ -71,7 +69,10 @@ ticker.on("reconnecting", function(reconnect_interval, reconnections) {
 });
 
 function onTicks(ticks) {
-	console.log("Ticks", ticks);
+	//console.log("Ticks", ticks);
+    app.get('/getProfile', (req, res) => {
+        res.send(ticks);
+    });
 
 }
 
@@ -124,10 +125,14 @@ function sessionHook() {
 function getProfile() {
 	kc.getProfile()
 		.then(function(response) {
+            app.get('/getProfile1', (req, res) => {
+                res.send(response);
+            });
 			console.log(response)
 
-           
+          
 		}).catch(function(err) {
 			console.log(err);
 		});
 }
+module.exports.SimpleMessage = 'Hello world';
