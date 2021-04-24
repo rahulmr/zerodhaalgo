@@ -11,44 +11,25 @@ const port = 3000;
 
 app.get('/foo', (req, res) => {
 
-	var KiteTicker = require("kiteconnect").KiteTicker;
-	var ticker = new KiteTicker({
-		api_key: "909lcbtyglf6ks4o",
-		access_token: "5C8jpQYxi4qm1h8pZUMgyTlsJqPYpPPh"
-	});
 	
-	// set autoreconnect with 10 maximum reconnections and 5 second interval
-	ticker.autoReconnect(true, 10, 5)
-	ticker.connect();
-	ticker.on("ticks", onTicks);
-	ticker.on("connect", subscribe);
-	
-	ticker.on("noreconnect", function() {
-		console.log("noreconnect");
-	});
-	
-	ticker.on("reconnecting", function(reconnect_interval, reconnections) {
-		console.log("Reconnecting: attempt - ", reconnections, " innterval - ", reconnect_interval);
-	});
-	
-	function onTicks(ticks) {
-		//console.log("Ticks", ticks);
-		res.json(ticks);
-		console.log(ticks);
-	}
-	
-	function subscribe() {
-		var items = [738561];
-		ticker.subscribe(items);
-		ticker.setMode(ticker.modeFull, items);
-	}
-/*	instruments= ["NFO:NIFTY2150615000CE"];
+	instruments= ["NFO:NIFTY2150615000CE","NSE:INFY","BSE:INFY"];
 	kc.getLTP(instruments).then(function(response) {
-		res.json(response);
-		console.log(response);
+
+		
+
+		var myDoc = {
+			Instruments: {
+				NSEINFY: response["NSE:INFY"].last_price,
+				BSEINFY: response["BSE:INFY"].last_price,
+				NFO:response["NFO:NIFTY2150615000CE"].last_price
+
+			}
+		};
+		res.json(myDoc);
+		console.log(myDoc);
 	}).catch(function(err) {
 		console.log(err);
-	})*/
+	})
 
 	
 /*	exchange= ["NFO"];
@@ -97,6 +78,36 @@ if(!access_token) {
 	kc.setAccessToken(access_token);
 	init();
 }
+var KiteTicker = require("kiteconnect").KiteTicker;
+	var ticker = new KiteTicker({
+		api_key: "909lcbtyglf6ks4o",
+		access_token: "5C8jpQYxi4qm1h8pZUMgyTlsJqPYpPPh"
+	});
+	
+	// set autoreconnect with 10 maximum reconnections and 5 second interval
+	ticker.autoReconnect(true, 10, 5)
+	ticker.connect();
+	ticker.on("ticks", onTicks);
+	ticker.on("connect", subscribe);
+	
+	ticker.on("noreconnect", function() {
+		console.log("noreconnect");
+	});
+	
+	ticker.on("reconnecting", function(reconnect_interval, reconnections) {
+		console.log("Reconnecting: attempt - ", reconnections, " innterval - ", reconnect_interval);
+	});
+	
+	function onTicks(ticks) {
+		//console.log("Ticks", ticks);
+
+	}
+	
+	function subscribe() {
+		var items = [738561];
+		ticker.subscribe(items);
+		ticker.setMode(ticker.modeFull, items);
+	}
 
 
 
