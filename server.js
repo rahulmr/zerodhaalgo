@@ -9,7 +9,23 @@ const port = 3000;
 //define db through mongojs
 
 
-
+app.get('/foo', (req, res) => {
+	instruments= ["NFO:NIFTY2150615000CE"];
+	kc.getLTP(instruments).then(function(response) {
+		res.json(response);
+		console.log(response);
+	}).catch(function(err) {
+		console.log(err);
+	})
+/*	exchange= ["NFO"];
+		kc.getInstruments(exchange).then(function(response) {
+			res.json(response);
+		}).catch(function(err) {
+			console.log(err);
+		})*/
+	
+	
+});
 
 app.listen(port, () => {
     console.log('Server start on port' +port);
@@ -20,8 +36,8 @@ var KiteConnect = require("kiteconnect").KiteConnect;
 
 var api_key = "909lcbtyglf6ks4o",
 	secret = "xcmxsyn41ro183qmj4r9uzzx76xlcdf4",
-	request_token = "4V1oM3113M4nob3ixQuQMoU16FDiOjC0",
-	access_token = "pVa9WSjhU2EQy56kEy37TB9tQa9MYhIP";
+	request_token = "BLsSoXX1j6D83Z6EBI0aof7hmdu4XSRP",
+	access_token = "5C8jpQYxi4qm1h8pZUMgyTlsJqPYpPPh";
 
 var options = {
 	"api_key": api_key,
@@ -51,7 +67,7 @@ if(!access_token) {
 var KiteTicker = require("kiteconnect").KiteTicker;
 var ticker = new KiteTicker({
 	api_key: "909lcbtyglf6ks4o",
-	access_token: "pVa9WSjhU2EQy56kEy37TB9tQa9MYhIP"
+	access_token: "5C8jpQYxi4qm1h8pZUMgyTlsJqPYpPPh"
 });
 
 // set autoreconnect with 10 maximum reconnections and 5 second interval
@@ -70,9 +86,7 @@ ticker.on("reconnecting", function(reconnect_interval, reconnections) {
 
 function onTicks(ticks) {
 	//console.log("Ticks", ticks);
-    app.get('/getProfile', (req, res) => {
-        res.send(ticks);
-    });
+
 
 }
 
@@ -125,9 +139,7 @@ function sessionHook() {
 function getProfile() {
 	kc.getProfile()
 		.then(function(response) {
-            app.get('/getProfile1', (req, res) => {
-                res.send(response);
-            });
+          
 			console.log(response)
 
           
@@ -135,4 +147,11 @@ function getProfile() {
 			console.log(err);
 		});
 }
-module.exports.SimpleMessage = 'Hello world';
+
+function getInstruments(exchange) {
+	kc.getInstruments(exchange).then(function(response) {
+		console.log(response);
+	}).catch(function(err) {
+		console.log(err);
+	})
+}
