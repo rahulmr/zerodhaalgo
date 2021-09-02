@@ -1,8 +1,16 @@
+const admin = require('firebase-admin');
+const serviceAccount = require('./ServiceAccount.json');
+
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 var fs = require("fs");
 const app = express();
+
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount)
+});
+const db=admin.firestore();
 
 const port = 3000;
 
@@ -21,12 +29,12 @@ const port = 3000;
 //step4
 //Copy the new access token and run the execution using node server.js command
 
-app.get('/foo', (req, res) => {
+/*app.get('/foo', (req, res) => {
 
 
 
 
-	instruments = [ "NSE:INFY", "BSE:INFY"];
+	instruments = ["NSE:NIFTY 50"];
 	kc.getLTP(instruments).then(function (response) {
 
 
@@ -44,12 +52,6 @@ app.get('/foo', (req, res) => {
 	})
 
 
-	/*	exchange= ["NFO"];
-			kc.getInstruments(exchange).then(function(response) {
-				res.json(response);
-			}).catch(function(err) {
-				console.log(err);
-			})*/
 
 
 });
@@ -57,7 +59,7 @@ app.get('/foo', (req, res) => {
 app.listen(port, () => {
 	console.log('Server start on port' + port);
 });
-app.use(express.static(path.join(__dirname, './dist/zerodha')));
+app.use(express.static(path.join(__dirname, './dist/zerodha')));*/
 
 
 
@@ -67,8 +69,8 @@ var KiteConnect = require("kiteconnect").KiteConnect;
 
 var api_key = "909lcbtyglf6ks4o",
 	secret = "xcmxsyn41ro183qmj4r9uzzx76xlcdf4",
-	request_token = "YTvTPNw7iglRD22CO7P03y18VOFmlchB",
-	access_token = "Uv4ZepVKpp1JlY0OUj3eVnRQ1UND8N3k";
+	request_token = "ICwZ5US2F1cyddKz0KrMhO6jbHsZmRzW",
+	access_token = "WiJjJ1O58k8xEcbqyDrb175BkUUF7RNk";
 	
 
 var options = {
@@ -86,31 +88,66 @@ if (!access_token) {
 	kc.generateSession(request_token, secret)
 		.then(function (response) {
 			console.log("Response", response);
-			init();
+			//init();
+			//Called first if there is no access token - ''
 		})
 		.catch(function (err) {
 			console.log(err);
 		})
 } else {
+	//comes here if the access token is copied and saved 
 	kc.setAccessToken(access_token);
-	init();
+	//init();
 }
-var myVar = setInterval(myFunction, 2000);
+var myVar = setInterval(myFunction, 10000);
+// /The format is BANKNIFTY<YY><M><DD>strike<PE/CE>
+//The month format is 1 for JAN, 2 for FEB, 3, 4, 5, 6, 7, 8, 9, O(capital o) for October, N for November, D for December.
 
 function myFunction() {
-	instruments = ["NSE:NIFTY 50"];
+	instruments = ["NSE:NIFTY 50", "NFO:NIFTY2190917250CE", "NFO:NIFTY2190917250PE", "NFO:NIFTY2190917300CE", "NFO:NIFTY2190917300PE", "NFO:BANKNIFTY2190936800CE", "NFO:BANKNIFTY2190936800PE", "NFO:BANKNIFTY2190936900CE", "NFO:BANKNIFTY2190936900PE"];
 kc.getLTP(instruments).then(
 	function (response) {
+		var d = new Date();
+		var n = d.getMinutes();
 	var myDoc = {
 		Instruments: {
 			NIFTY: response["NSE:NIFTY 50"].last_price,
+			NCE1: response["NFO:NIFTY2190917250CE"].last_price,
+			NPE1: response["NFO:NIFTY2190917250PE"].last_price,
+			NCE2: response["NFO:NIFTY2190917300CE"].last_price,
+			NPE2: response["NFO:NIFTY2190917300PE"].last_price,
+			BCE1: response["NFO:BANKNIFTY2190936800CE"].last_price,
+			BPE1: response["NFO:BANKNIFTY2190936800PE"].last_price,
+			BCE2: response["NFO:BANKNIFTY2190936900CE"].last_price,
+			BPE2: response["NFO:BANKNIFTY2190936900PE"].last_price
 		}
 	};
 	//res.json(myDoc);
 	var x = response["NSE:NIFTY 50"].last_price;
+	var NCE1= response["NFO:NIFTY2190917250CE"].last_price;
+	var NPE1= response["NFO:NIFTY2190917250PE"].last_price;
+	var NCE2= response["NFO:NIFTY2190917300CE"].last_price;
+	var NPE2= response["NFO:NIFTY2190917300PE"].last_price;
+	var BCE1= response["NFO:BANKNIFTY2190936800CE"].last_price;
+	var BPE1= response["NFO:BANKNIFTY2190936800PE"].last_price;
+	var BCE2= response["NFO:BANKNIFTY2190936900CE"].last_price;
+	var BPE2= response["NFO:BANKNIFTY2190936900PE"].last_price;
+
 	var y = 50;
 	var z = x % y;
-	console.log(myDoc, x - z);
+	console.log((d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()) , (((NCE1 * 0.77) + (NPE1 * 0.74) + (NCE2) + (NPE2 * 0.60))/348).toFixed(2).toString(),
+	(((BCE1 * 0.69) + (BPE1) + (BCE2 * 0.79) + (BPE2 * 0.86))/1176).toFixed(2).toString()  );
+	const quoteData = {
+		quote: x,
+		date:  d.getHours() +  ':' + d.getMinutes() + '**'
+	};
+	
+	var sometime= (d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()) + ',' + (((NCE1 * 0.77) + (NPE1 * 0.74) + (NCE2) + (NPE2 * 0.60))/348).toFixed(2).toString() + ',' + (((BCE1 * 0.69) + (BPE1) + (BCE2 * 0.79) + (BPE2 * 0.86))/1176).toFixed(2).toString() ;
+	//db.collection('sampleData').doc ('inspiration').set(quoteData);
+
+	db.collection('sampleData').doc ('02092021').update({
+		Values: admin.firestore.FieldValue.arrayUnion( `${sometime}`)
+	  }, {merge:true});
 	}).catch(function (err) {
 	console.log(err);
 })
