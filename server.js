@@ -69,8 +69,8 @@ var KiteConnect = require("kiteconnect").KiteConnect;
 
 var api_key = "909lcbtyglf6ks4o",
 	secret = "xcmxsyn41ro183qmj4r9uzzx76xlcdf4",
-	request_token = "ICwZ5US2F1cyddKz0KrMhO6jbHsZmRzW",
-	access_token = "WiJjJ1O58k8xEcbqyDrb175BkUUF7RNk";
+	request_token = "HlWNNeuF5l8q0c33Ja72VWjUd4XoIWYa",
+	access_token = "RDDmT5NkQpqN1ofCZlv0bIPNrupBkrq1";
 	
 
 var options = {
@@ -88,7 +88,7 @@ if (!access_token) {
 	kc.generateSession(request_token, secret)
 		.then(function (response) {
 			console.log("Response", response);
-			//init();
+			init();
 			//Called first if there is no access token - ''
 		})
 		.catch(function (err) {
@@ -145,7 +145,7 @@ kc.getLTP(instruments).then(
 	var sometime= (d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()) + ',' + (((NCE1 * 0.77) + (NPE1 * 0.74) + (NCE2) + (NPE2 * 0.60))/348).toFixed(2).toString() + ',' + (((BCE1 * 0.69) + (BPE1) + (BCE2 * 0.79) + (BPE2 * 0.86))/1176).toFixed(2).toString() ;
 	//db.collection('sampleData').doc ('inspiration').set(quoteData);
 
-	db.collection('sampleData').doc ('02092021').update({
+	db.collection('sampleData').doc ('03092021').update({
 		Values: admin.firestore.FieldValue.arrayUnion( `${sometime}`)
 	  }, {merge:true});
 	}).catch(function (err) {
@@ -160,6 +160,12 @@ kc.getLTP(instruments).then(
 
 
 	function init() {
+		db.collection('sampleData').doc ('03092021').set({
+			Values: admin.firestore.FieldValue.arrayUnion("Time, Nifty, BankNifty")
+		  }, { merge: true }).then(some=>{
+			  console.log("success");
+		  });
+
 		//console.log(kc.getLoginURL())
 
 
