@@ -99,7 +99,16 @@ if (!access_token) {
 	kc.setAccessToken(access_token);
 	//init();
 }
-var myVar = setInterval(myFunction, 10000);
+var myprogramInterval = 1000000;
+setInterval(function(){ // Set interval for checking
+    var date = new Date(); // Create a Date object to find out what time it is
+    if(date.getHours() === 9 && date.getMinutes() === 15){ // Check the time
+        // Do stuff
+		myprogramInterval = 10000;
+    }
+}, 60000); // Repeat every 60000 milliseconds (1 minute)
+
+var myVar = setInterval(myFunction, myprogramInterval);
 // /The format is BANKNIFTY<YY><M><DD>strike<PE/CE>
 //The month format is 1 for JAN, 2 for FEB, 3, 4, 5, 6, 7, 8, 9, O(capital o) for October, N for November, D for December.
 
