@@ -99,14 +99,14 @@ if (!access_token) {
 	kc.setAccessToken(access_token);
 	//init();
 }
-var myprogramInterval = 1000000;
-setInterval(function(){ // Set interval for checking
+var myprogramInterval = 15000;
+/*setInterval(function(){ // Set interval for checking
     var date = new Date(); // Create a Date object to find out what time it is
     if(date.getHours() === 9 && date.getMinutes() === 15){ // Check the time
         // Do stuff
 		myprogramInterval = 10000;
     }
-}, 60000); // Repeat every 60000 milliseconds (1 minute)
+}, 60000); // Repeat every 60000 milliseconds (1 minute)*/
 
 var myVar = setInterval(myFunction, myprogramInterval);
 // /The format is BANKNIFTY<YY><M><DD>strike<PE/CE>
@@ -144,14 +144,14 @@ kc.getLTP(instruments).then(
 
 	var y = 50;
 	var z = x % y;
-	console.log((d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()) , (((NCE1 * 0.77) + (NPE1 * 0.74) + (NCE2) + (NPE2 * 0.60))/348).toFixed(2).toString(),
-	(((BCE1 * 0.69) + (BPE1) + (BCE2 * 0.79) + (BPE2 * 0.86))/1176).toFixed(2).toString()  );
+	console.log((d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()) , (((NCE1 * 77) + (NPE1 * 74) + (NCE2 * 100) + (NPE2 * 60))/348).toFixed(2).toString(),
+	(((BCE1 * 69) + (BPE1 * 100) + (BCE2 * 79) + (BPE2 * 86))/1176).toFixed(2).toString(), ((((NCE1 * 77) + (NPE1 * 74) + (NCE2 * 100) + (NPE2 * 60))/348) - (((BCE1 * 69) + (BPE1 * 100) + (BCE2 * 79) + (BPE2 * 86))/1176)).toFixed(2)  );
 	const quoteData = {
 		quote: x,
 		date:  d.getHours() +  ':' + d.getMinutes() + '**'
 	};
 	
-	var sometime= (d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()) + ',' + (((NCE1 * 0.77) + (NPE1 * 0.74) + (NCE2) + (NPE2 * 0.60))/348).toFixed(2).toString() + ',' + (((BCE1 * 0.69) + (BPE1) + (BCE2 * 0.79) + (BPE2 * 0.86))/1176).toFixed(2).toString() ;
+	var sometime= (d.getHours().toString() + d.getMinutes().toString() + d.getSeconds().toString()) + ',' + (((NCE1 * 77) + (NPE1 * 74) + (NCE2 * 100) + (NPE2 * 60))/348).toFixed(2).toString() + ',' + (((BCE1 * 69) + (BPE1 * 100) + (BCE2 * 79) + (BPE2 * 86))/1176).toFixed(2).toString() ;
 	//db.collection('sampleData').doc ('inspiration').set(quoteData);
 
 	db.collection('sampleData').doc ('03092021').update({
